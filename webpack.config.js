@@ -3,6 +3,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // 每次打包前清空对应目录
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack')
 module.exports = {
     devtool: 'inline-source-map',
     // webpack-dev-server插件 检测代码变化并自动重新编译并自动刷新浏览器
@@ -10,19 +11,19 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
         hot: true, // 告诉 dev-server 我们在用 HMR
-        hotOnly: true // 指定如果热加载失败了禁止刷新页面 (这是 webpack 的默认行为)，这样便于我们知道失败是因为何种错误
+        hotOnly: true // 禁用自动刷新
     },
     // 单入口
-    // entry: './src/index.js',
+    entry: './src/index.js',
     // 多入口
-    entry: {
-        app: './src/index.js',
-        print: './src/print.js'
-    },
+    // entry: {
+    //     app: './src/index.js',
+    //     print: './src/print.js'
+    // },
     // filename: '[name].bundle.js'中的[name]会替换为对应的入口起点名
     output: {
         // filename: 'bundle.js',  // 输出文件名
-        filename: '[name].bundle.js',
+        filename: process.env.NODE_ENV === 'production' ? '[name].[chunkhash].js' : '[name].bundle.js',
         path: path.resolve(__dirname, 'dist')   // 输出文件所在目录
     },
     // style-loader 通过插入<style>标签将css插入到dom
@@ -53,6 +54,9 @@ module.exports = {
             title: 'webpack3Demo',
             filename: 'index1.html'
         }),
-        // new CleanWebpackPlugin(['dist'])
+        // [chunkhash]不能和 HMR 一起使用
+        // new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin(), // 打印日志信息时 webpack 默认使用模块的数字 ID 指代模块，不便于 debug，这个插件可以将其替换为模块的真实路径
+        new CleanWebpackPlugin(['dist'])
     ]
 }

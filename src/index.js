@@ -17,5 +17,12 @@ function component() {
   element.appendChild(btn);
   return element;
 }
-
-document.body.appendChild(component());
+var element = component();
+document.body.appendChild(element);
+if (module.hot) {
+  module.hot.accept('./print.js', function() {
+    console.log('Accepting the updated printMe module!');
+    printMe();
+  })
+}
+// module.hot.decline()
