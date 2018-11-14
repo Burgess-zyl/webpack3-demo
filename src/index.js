@@ -1,7 +1,9 @@
 import './style.css'
 import Icon from './webpack.png'
 import printMe from './print.js';
+import _ from 'lodash';
 function component() {
+  console.log(_.join(['module', 'loaded!'], ' '));
   const element = document.createElement('div');
   const btn = document.createElement('button');
 

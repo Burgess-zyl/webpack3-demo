@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build1": "webpack -p",
     "build": "cross-env NODE_ENV='production' webpack -p",
     "start": "webpack-dev-server --open",
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "prod": "webpack --progress --config webpack.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -23,5 +26,7 @@
     "webpack-dev-server": "^2.11.3",
     "webpack-merge": "^4.1.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "loadsh": "0.0.3"
+  }
 }
